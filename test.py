@@ -12,4 +12,3 @@ def max(a, b):
         return a
     else:
         return b
-        

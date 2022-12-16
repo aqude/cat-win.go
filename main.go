@@ -4,6 +4,9 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
+
+	"github.com/TwiN/go-color"
 )
 
 func ctr() func() string {
@@ -16,6 +19,7 @@ func ctr() func() string {
 }
 func main() {
 	ctr := ctr()
+	lines_ctr := 0
 	command := os.Args[1]
 	if command == "catw" {
 		arg := os.Args[2]
@@ -25,11 +29,25 @@ func main() {
 		}
 		defer file.Close()
 		scanner := bufio.NewScanner(file)
-		// optionally, resize scanner's capacity for lines over 64K, see next example
+		// Вызываем метод Scan() до тех пор, пока он не вернет false
+
 		for scanner.Scan() {
-			fmt.Println(ctr(), scanner.Text())
+			// разделитель стрку на слова
+			str := strings.Fields(scanner.Text())
+			for _, word := range str {
+				if word == "def" || word == "if" || word == "return" || word == "else" || word == "elif" || word == "for" || word == "while" || word == "try" || word == "except" || word == "finally" || word == "with" || word == "class" {
+					fmt.Println(ctr(), color.InRed(word))
+
+				} else {
+					fmt.Println(ctr(), word)
+				}
+			}
+
+			// fmt.Println(ctr(), scanner.Text())
+			lines_ctr++
 		}
-		// раз
+		fmt.Println("lines:", lines_ctr)
+
 	} else {
 		fmt.Println("write - catw")
 	}
